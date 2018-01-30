@@ -67,10 +67,10 @@ namespace MinerManager
 
         void Setup()
         {
-            var filePath = ConfigurationManager.AppSettings["MinerCatalystPath"];
+            var filePath = ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["CatalystName"];
             if (!File.Exists(filePath))
             {
-                var fileContents = "@echo off\r\nstart cmd /c " + ConfigurationManager.AppSettings["MinerPath"];
+                var fileContents = "@echo off\r\nstart cmd /c " + ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["MinerName"];
                 using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
                 {
                     stream.Write(Encoding.ASCII.GetBytes(fileContents), 0, Encoding.ASCII.GetByteCount(fileContents));
@@ -179,7 +179,7 @@ namespace MinerManager
             if (dataGridView_Queue.Rows.Count <= 1)
                 return false;
 
-            var filePath = ConfigurationManager.AppSettings["MinerPath"];
+            var filePath = ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["MinerName"];
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -217,8 +217,8 @@ namespace MinerManager
             ProcessStartInfo processInfo;
             Process process;
 
-            processInfo = new ProcessStartInfo("cmd.exe", "/c " + ConfigurationManager.AppSettings["MinerCatalystPath"]);
-            processInfo.WorkingDirectory = @"C:\Crypto\Tools\ccminer-x64-2.2.4-cuda9";
+            processInfo = new ProcessStartInfo("cmd.exe", "/c " + ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["CatalystName"]);
+            processInfo.WorkingDirectory = ConfigurationManager.AppSettings["MinerPath"];
             processInfo.WindowStyle = ProcessWindowStyle.Hidden;
             processInfo.UseShellExecute = false;
             processInfo.CreateNoWindow = true;
@@ -313,23 +313,34 @@ namespace MinerManager
         //TIMER FUNCTIONS
         void StartJobTimer(float duration)
         {
-            if (duration == -1) duration = int.MaxValue;
+            TimerCompleteAt = DateTime.Now.AddMilliseconds(duration * 60f * 1000f);
+            if (duration == -1)
+                TimerCompleteAt = DateTime.MinValue;
 
             StartMinerTimer(duration);
             StartSecondTimer();
-
-            TimerCompleteAt = DateTime.Now.AddMilliseconds(duration * 60f * 1000f);
         }
         void StartMinerTimer(float duration)
         {
             MinerTimer = new System.Timers.Timer();
             MinerTimer.Elapsed += new ElapsedEventHandler(MinerTimerTick);
-            MinerTimer.Interval = duration * 60f * 1000f;
+            if (duration == -1) MinerTimer.Interval = int.MaxValue;
+            else                MinerTimer.Interval = duration * 60f * 1000f;
             MinerTimer.Start();
         }
         void StartSecondTimer()
         {
             SecondTimer = new System.Timers.Timer();
+
+            if (TimerCompleteAt == DateTime.MinValue)
+            {
+                textBox_CurrentJob_Hours.Text = "NA";
+                textBox_CurrentJob_Minutes.Text = "NA";
+                textBox_CurrentJob_Seconds.Text = "NA";
+
+                return;
+            }
+            
             SecondTimer.Elapsed += new ElapsedEventHandler(SecondTimerTick);
             SecondTimer.Interval = 1000;
             SecondTimer.AutoReset = true;
@@ -342,8 +353,8 @@ namespace MinerManager
 
             PauseTime = DateTime.Now;
 
-            if (MinerTimer.Enabled) MinerTimer.Stop();
-            if (SecondTimer.Enabled) SecondTimer.Stop();
+            MinerTimer.Stop();
+            SecondTimer.Stop();
         }
         void ResumeJobTimers()
         {
@@ -352,8 +363,8 @@ namespace MinerManager
 
             TimerCompleteAt = TimerCompleteAt.Add(DateTime.Now.Subtract(PauseTime));
             
-            if (!MinerTimer.Enabled) MinerTimer.Start();
-            if (!SecondTimer.Enabled) SecondTimer.Start();
+            MinerTimer.Start();
+            SecondTimer.Start();
         }
         private void MinerTimerTick(object source, ElapsedEventArgs e)
         {

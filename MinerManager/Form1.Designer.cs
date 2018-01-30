@@ -335,7 +335,7 @@
             this.button_PauseJob.Name = "button_PauseJob";
             this.button_PauseJob.Size = new System.Drawing.Size(75, 75);
             this.button_PauseJob.TabIndex = 20;
-            this.button_PauseJob.Text = "Pause";
+            this.button_PauseJob.Text = "Stop";
             this.button_PauseJob.UseVisualStyleBackColor = true;
             this.button_PauseJob.Click += new System.EventHandler(this.button_PauseJob_Click);
             // 
