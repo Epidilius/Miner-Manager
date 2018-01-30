@@ -41,8 +41,7 @@ Control Explanations:
 - CCMinerName: The name of your ccminer
 - MinerName: What you want your bat file to be called
 - CatalystName: The name of your catalyst file. This starts the bat file (which runs your miner) to avoid locking issues
-
-MaxTemp: The max temperatur of your GPU
+- MaxTemp: The max temperature of your GPU
 
 ----  ----  ----  ----
 Setup:
