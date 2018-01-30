@@ -1,0 +1,1 @@
+ccminer-x64.exe --algo=scrypt:10 --lookup-gap=2 -o stratum+tcp://us.pool.garlicsoup.xyz:3333 -u GcZRnByC1mhqh7Lk2mkxYrdLd3MuaCGywG --max-temp=75
