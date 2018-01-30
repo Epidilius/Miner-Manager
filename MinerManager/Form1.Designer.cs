@@ -31,10 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView_Queue = new System.Windows.Forms.DataGridView();
-            this.Pool = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Wallet = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MiningDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UsingLookupGap = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -73,6 +69,15 @@
             this.button_Remove = new System.Windows.Forms.Button();
             this.button_MoveDown = new System.Windows.Forms.Button();
             this.button_MoveUp = new System.Windows.Forms.Button();
+            this.comboBox_Algorithm = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.comboBox_CurrentJob_Algorithm = new System.Windows.Forms.ComboBox();
+            this.Pool = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wallet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MiningDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Algorithm = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UsingLookupGap = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Queue)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -86,6 +91,7 @@
             this.Pool,
             this.Wallet,
             this.MiningDuration,
+            this.Algorithm,
             this.UsingLookupGap});
             this.dataGridView_Queue.Location = new System.Drawing.Point(15, 25);
             this.dataGridView_Queue.MultiSelect = false;
@@ -93,30 +99,6 @@
             this.dataGridView_Queue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView_Queue.Size = new System.Drawing.Size(473, 381);
             this.dataGridView_Queue.TabIndex = 0;
-            // 
-            // Pool
-            // 
-            this.Pool.HeaderText = "Pool";
-            this.Pool.Name = "Pool";
-            this.Pool.ReadOnly = true;
-            // 
-            // Wallet
-            // 
-            this.Wallet.HeaderText = "Wallet";
-            this.Wallet.Name = "Wallet";
-            this.Wallet.ReadOnly = true;
-            // 
-            // MiningDuration
-            // 
-            this.MiningDuration.HeaderText = "Mining Duration";
-            this.MiningDuration.Name = "MiningDuration";
-            this.MiningDuration.ReadOnly = true;
-            // 
-            // UsingLookupGap
-            // 
-            this.UsingLookupGap.HeaderText = "Using Lookup Gap";
-            this.UsingLookupGap.Name = "UsingLookupGap";
-            this.UsingLookupGap.ReadOnly = true;
             // 
             // label1
             // 
@@ -172,7 +154,7 @@
             // checkBox_UseLookupGap
             // 
             this.checkBox_UseLookupGap.AutoSize = true;
-            this.checkBox_UseLookupGap.Location = new System.Drawing.Point(122, 114);
+            this.checkBox_UseLookupGap.Location = new System.Drawing.Point(123, 168);
             this.checkBox_UseLookupGap.Name = "checkBox_UseLookupGap";
             this.checkBox_UseLookupGap.Size = new System.Drawing.Size(107, 17);
             this.checkBox_UseLookupGap.TabIndex = 10;
@@ -242,6 +224,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.comboBox_Algorithm);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.textBox_Seconds);
             this.groupBox1.Controls.Add(this.button_AddToQueue);
@@ -280,7 +264,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.comboBox_CurrentJob_Algorithm);
             this.groupBox2.Controls.Add(this.textBox_CurrentJob_Seconds);
             this.groupBox2.Controls.Add(this.button_StartJob);
             this.groupBox2.Controls.Add(this.button_PauseJob);
@@ -421,7 +407,7 @@
             // 
             this.checkBox_CurrentJob_LookupGap.AutoSize = true;
             this.checkBox_CurrentJob_LookupGap.Enabled = false;
-            this.checkBox_CurrentJob_LookupGap.Location = new System.Drawing.Point(119, 114);
+            this.checkBox_CurrentJob_LookupGap.Location = new System.Drawing.Point(120, 167);
             this.checkBox_CurrentJob_LookupGap.Name = "checkBox_CurrentJob_LookupGap";
             this.checkBox_CurrentJob_LookupGap.Size = new System.Drawing.Size(115, 17);
             this.checkBox_CurrentJob_LookupGap.TabIndex = 10;
@@ -484,6 +470,96 @@
             this.button_MoveUp.TabIndex = 11;
             this.button_MoveUp.UseVisualStyleBackColor = true;
             this.button_MoveUp.Click += new System.EventHandler(this.button_MoveUp_Click);
+            // 
+            // comboBox_Algorithm
+            // 
+            this.comboBox_Algorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Algorithm.FormattingEnabled = true;
+            this.comboBox_Algorithm.Items.AddRange(new object[] {
+            "scrypt:10",
+            "heavy",
+            "mjollnir",
+            "fugue256",
+            "groestl",
+            "myr-gr",
+            "jackpot",
+            "quark",
+            "anime",
+            "nist5",
+            "x11"});
+            this.comboBox_Algorithm.Location = new System.Drawing.Point(122, 139);
+            this.comboBox_Algorithm.Name = "comboBox_Algorithm";
+            this.comboBox_Algorithm.Size = new System.Drawing.Size(116, 21);
+            this.comboBox_Algorithm.TabIndex = 22;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(123, 120);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(50, 13);
+            this.label14.TabIndex = 23;
+            this.label14.Text = "Algorithm";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(120, 120);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(50, 13);
+            this.label15.TabIndex = 25;
+            this.label15.Text = "Algorithm";
+            // 
+            // comboBox_CurrentJob_Algorithm
+            // 
+            this.comboBox_CurrentJob_Algorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_CurrentJob_Algorithm.Enabled = false;
+            this.comboBox_CurrentJob_Algorithm.FormattingEnabled = true;
+            this.comboBox_CurrentJob_Algorithm.Items.AddRange(new object[] {
+            "scrypt:10",
+            "heavy",
+            "mjollnir",
+            "fugue256",
+            "groestl",
+            "myr-gr",
+            "jackpot",
+            "quark",
+            "anime",
+            "nist5",
+            "x11"});
+            this.comboBox_CurrentJob_Algorithm.Location = new System.Drawing.Point(119, 139);
+            this.comboBox_CurrentJob_Algorithm.Name = "comboBox_CurrentJob_Algorithm";
+            this.comboBox_CurrentJob_Algorithm.Size = new System.Drawing.Size(114, 21);
+            this.comboBox_CurrentJob_Algorithm.TabIndex = 24;
+            // 
+            // Pool
+            // 
+            this.Pool.HeaderText = "Pool";
+            this.Pool.Name = "Pool";
+            this.Pool.ReadOnly = true;
+            // 
+            // Wallet
+            // 
+            this.Wallet.HeaderText = "Wallet";
+            this.Wallet.Name = "Wallet";
+            this.Wallet.ReadOnly = true;
+            // 
+            // MiningDuration
+            // 
+            this.MiningDuration.HeaderText = "Mining Duration";
+            this.MiningDuration.Name = "MiningDuration";
+            this.MiningDuration.ReadOnly = true;
+            // 
+            // Algorithm
+            // 
+            this.Algorithm.HeaderText = "Algorithm";
+            this.Algorithm.Name = "Algorithm";
+            // 
+            // UsingLookupGap
+            // 
+            this.UsingLookupGap.HeaderText = "Using Lookup Gap";
+            this.UsingLookupGap.Name = "UsingLookupGap";
+            this.UsingLookupGap.ReadOnly = true;
             // 
             // Form1
             // 
@@ -550,13 +626,18 @@
         private System.Windows.Forms.TextBox textBox_CurrentJob_Hours;
         private System.Windows.Forms.CheckBox checkBox_CurrentJob_LookupGap;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Pool;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Wallet;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MiningDuration;
-        private System.Windows.Forms.DataGridViewTextBoxColumn UsingLookupGap;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox textBox_Seconds;
         private System.Windows.Forms.Button button_Start;
+        private System.Windows.Forms.ComboBox comboBox_Algorithm;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Pool;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Wallet;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MiningDuration;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Algorithm;
+        private System.Windows.Forms.DataGridViewTextBoxColumn UsingLookupGap;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBox_CurrentJob_Algorithm;
     }
 }
 

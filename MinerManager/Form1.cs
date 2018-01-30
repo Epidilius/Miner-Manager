@@ -44,7 +44,7 @@ namespace MinerManager
         static extern bool CloseHandle(IntPtr handle);
         #endregion
 
-        static string BAT_TEXT = "ccminer-x64 --algo=scrypt:10 -o POOL -u WALLET -listen --max-temp=85";
+        static string BAT_TEXT = "MINER --algo=ALGORITHM -o POOL -u WALLET -listen --max-temp=TEMP";
         static string LOOKUP_GAP_TEXT = "--lookup-gap 2";
         static string BAT_SUFFIX = "\r\npause";
 
@@ -79,6 +79,8 @@ namespace MinerManager
 
             contextMenuStrip1.Items[0].Click += new EventHandler(CloseFromTray);
 
+            comboBox_Algorithm.SelectedIndex = 0;
+
             ParentProcessID = -1;
 
             MinerTimer = null;
@@ -96,8 +98,9 @@ namespace MinerManager
                 var targetWallet = textBox_Wallet.Text;
                 var minutesMining = Math.Round(TimeToMine(), 2);
                 var usingLookupGap = checkBox_UseLookupGap.Checked;
+                var algorithm = comboBox_Algorithm.Text;
 
-                dataGridView_Queue.Rows.Add(targetPool, targetWallet, minutesMining, usingLookupGap);
+                dataGridView_Queue.Rows.Add(targetPool, targetWallet, minutesMining, algorithm, usingLookupGap);
             }
             catch (ArgumentException argEx)
             {
@@ -187,14 +190,21 @@ namespace MinerManager
 
             var pool = dataGridView_Queue.Rows[0].Cells[0].Value.ToString();
             var wallet = dataGridView_Queue.Rows[0].Cells[1].Value.ToString();
-            var lookupGap = dataGridView_Queue.Rows[0].Cells[3].Value.ToString().ToLower() == "true" ? true : false;
+            var algorithm = dataGridView_Queue.Rows[0].Cells[3].Value.ToString();
+            var lookupGap = dataGridView_Queue.Rows[0].Cells[4].Value.ToString().ToLower() == "true" ? true : false;
 
             textBox_CurrentJob_Pool.Text = pool;
             textBox_CurrentJob_Wallet.Text = wallet;
+            comboBox_CurrentJob_Algorithm.Text = algorithm;
             checkBox_CurrentJob_LookupGap.Checked = lookupGap;
-
-            var fileContents = BAT_TEXT.Replace("POOL", pool);
+            
+            var fileContents = BAT_TEXT;
+            fileContents = fileContents.Replace("MINER", ConfigurationManager.AppSettings["CCMinerName"]);
+            fileContents = fileContents.Replace("ALGORITHM", algorithm);
+            fileContents = fileContents.Replace("POOL", pool);
             fileContents = fileContents.Replace("WALLET", wallet);
+            fileContents = fileContents.Replace("TEMP", ConfigurationManager.AppSettings["MaxTemp"]);
+
             if (lookupGap)
                 fileContents += LOOKUP_GAP_TEXT;
             fileContents += BAT_SUFFIX;
