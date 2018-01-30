@@ -4,6 +4,8 @@ A GUI to help you rent out your hashing power, or even just mine for yourself.
 
 Designed to pool mine GRLC, I don't know if it would work elsewhere.
 
+The Application folder is where I keep the most recent build. 
+
 It closes to the system tray, right click the icon and hit "Exit" to close it for good. I did this so it could be out of the way while running.
 ----  ----  ----  ----
 This works in four steps:
