@@ -2,7 +2,7 @@ MinerManager
 
 A GUI to help you rent out your hashing power, or even just mine for yourself.
 
-Designed to pool mine GRLC, I don't know if it would work elsewhere.
+Designed to pool mine GRLC with an NVIDIA GPU, I don't know if it would work elsewhere.
 
 The Application folder is where I keep the most recent build. 
 
@@ -18,31 +18,32 @@ Control Explanations:
 
 //Fields
 
-Target Pool: The pool you want to mine in (format like: stratum+tcp://us.pool.garlicsoup.xyz:3333)
-
-Target Wallet: The wallet your mined garlic will go to 
-
-Duration: HH (hours), MM (minutes), and SS (seconds). The duration is the total of all three fields. Use numbers, not words. Leave empty for no time limit on the miner
-
-Use Lookup Gap: If this is checked, it will add "--lookup-gap 2" to your bat
+- Target Pool: The pool you want to mine in (format like: stratum+tcp://us.pool.garlicsoup.xyz:3333)
+- Target Wallet: The wallet your mined garlic will go to 
+- Duration: HH (hours), MM (minutes), and SS (seconds). The duration is the total of all three fields. Use numbers, not words. Leave empty for no time limit on the miner
+- Use Lookup Gap: If this is checked, it will add "--lookup-gap 2" to your bat
+- Algorithm: The algorithm you want to mine. Leave as scrypt:10 for GRLC
 
 //Buttons
 
-Add to Queue: Takes the information you inputted and adds itto your queue
+- Add to Queue: Takes the information you inputted and adds it to your queue
+- Start: If you stopped the miner, this starts it back up and resumes the timers
+- Stop: Pauses your timer, kills your miner. 
+- Skip: Ends the current job
+- Up Arrow: Moves the selected job up the queue
+- Down Arrow: Moves the selected job down the queue
+- Checkmark: Starts your mining jobs (starting at the top of the queue)
+- Cross: Removes selected job from the queue
 
-Start: If you stopped the miner, this starts it back up and resumes the timers
+//Config
 
-Stop: Pauses your timer, kills your miner. 
+- MinerPath: The directory you have ccminer in
+- CCMinerName: The name of your ccminer
+- MinerName: What you want your bat file to be called
+- CatalystName: The name of your catalyst file. This starts the bat file (which runs your miner) to avoid locking issues
 
-Skip: Ends the current job
+MaxTemp: The max temperatur of your GPU
 
-Up Arrow: Moves the selected job up the queue
-
-Down Arrow: Moves the selected job down the queue
-
-Checkmark: Starts your mining jobs (starting at the top of the queue)
-
-Cross: Removes selected job from the queue
 ----  ----  ----  ----
 Setup:
 
