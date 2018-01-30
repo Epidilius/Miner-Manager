@@ -132,18 +132,18 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.Size = new System.Drawing.Size(62, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Pool To Mine";
+            this.label2.Text = "Target Pool";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 56);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.Size = new System.Drawing.Size(71, 13);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Wallet To Mine To";
+            this.label3.Text = "Target Wallet";
             // 
             // textBox_Pool
             // 
@@ -498,6 +498,7 @@
             this.Controls.Add(this.button_MoveUp);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_Queue);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Queue)).EndInit();

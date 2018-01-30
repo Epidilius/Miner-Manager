@@ -45,7 +45,7 @@ namespace MinerManager
         #endregion
 
         static string BAT_TEXT = "ccminer-x64 --algo=scrypt:10 -o POOL -u WALLET -listen --max-temp=85";
-        static string LOOKUP_GAP_TEXT = "--lookup-gap 2 ";
+        static string LOOKUP_GAP_TEXT = "--lookup-gap 2";
         static string BAT_SUFFIX = "\r\npause";
 
         delegate void GUIDelegate(TimeSpan timeLeft);
@@ -210,7 +210,9 @@ namespace MinerManager
         {
             DisplayTrayNotification("Job Done", "Mining done, updating mining job");
             KillAllProcessesSpawnedBy(ParentProcessID);
-            StartMiner();
+
+            if(dataGridView_Queue.Rows.Count <= 1) PauseJobTimers();
+            else StartMiner();
         }
         void RunMinerScript()
         {
@@ -479,11 +481,17 @@ namespace MinerManager
         //ACTIVE JOB HANDLERS
         private void button_StartJob_Click(object sender, EventArgs e)
         {
+            if (MinerTimer.Enabled)
+                return;
+
             ResumeJobTimers();
             ResumeProcess(ParentProcessID);
         }
         private void button_PauseJob_Click(object sender, EventArgs e)
         {
+            if (!MinerTimer.Enabled)
+                return;
+
             PauseJobTimers();
             SuspendProcess(ParentProcessID);
         }
