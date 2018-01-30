@@ -45,9 +45,11 @@ Cross: Removes selected job from the queue
 Setup:
 
 //Option 1:
+
 Change the two paths in MinerManager.exe.config to match your ccminer path
 
 //Option 2:
+
 Move your ccminer stuff into the path found in MinerManager.exe.config (C:\Crypto\Tools\ccminer-x64-2.2.4-cuda9\)
 ----  ----  ----  ----
 Pool List: https://pandawanfr.github.io/GarlicRecipes/pool-mining.html#main-net
