@@ -44,7 +44,7 @@ namespace MinerManager
         static extern bool CloseHandle(IntPtr handle);
         #endregion
 
-        static string BAT_TEXT = "MINER --algo=ALGORITHM -o POOL -u WALLET -listen --max-temp=TEMP";
+        static string BAT_TEXT = "MINER --algo=ALGORITHM -o POOL -u WALLET -listen --max-temp=TEMP ";
         static string LOOKUP_GAP_TEXT = "--lookup-gap 2";
         static string BAT_SUFFIX = "\r\npause";
 
