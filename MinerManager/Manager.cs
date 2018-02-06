@@ -14,10 +14,12 @@ using System.Diagnostics;
 using System.Threading;
 using System.Management;
 using System.Runtime.InteropServices;
+using HtmlAgilityPack;
+using System.Net;
 
 namespace MinerManager
 {
-    public partial class Form1 : Form
+    public partial class Manager : Form
     {
         #region Process Handler Requirements
         [Flags]
@@ -44,6 +46,9 @@ namespace MinerManager
         static extern bool CloseHandle(IntPtr handle);
         #endregion
 
+        static string POOLS_URL = @"https://pandawanfr.github.io/GarlicRecipes/pool-mining.html#main-net";
+        Dictionary<string, string> PoolList;
+
         static string BAT_TEXT = "MINER --algo=ALGORITHM -o POOL -u WALLET -listen --max-temp=TEMP ";
         static string LOOKUP_GAP_TEXT = "--lookup-gap 2";
         static string BAT_SUFFIX = "\r\npause";
@@ -59,7 +64,7 @@ namespace MinerManager
         System.Timers.Timer MinerTimer;
         System.Timers.Timer SecondTimer;
 
-        public Form1()
+        public Manager()
         {
             InitializeComponent();
             Setup();
@@ -85,6 +90,67 @@ namespace MinerManager
 
             MinerTimer = null;
             SecondTimer = null;
+
+            PoolList = new Dictionary<string, string>();
+            GetPools();
+        }
+
+        void GetPools()
+        {
+            string html = "No Response";
+            HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(POOLS_URL);
+
+            try
+            {
+                webReq.CookieContainer = new CookieContainer();
+                webReq.Method = "GET";
+                using (WebResponse response = webReq.GetResponse())
+                {
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(stream);
+                        html = reader.ReadToEnd();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var temp = -1;
+            }
+
+            //TODO: Throw exception
+            if (html == "No Response")
+                return;
+
+            ParsePools(html);
+        }
+        void ParsePools(string html)
+        {
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(html);
+
+            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes(@"/html/body/section/div/table/tbody");
+            
+            foreach(var node in nodes.Descendants("tr"))
+            {
+                //TODO: Set up the combo box to use these other elements?
+                var childNodes = node.Descendants("td");
+
+                var poolName    = childNodes.ElementAt(0).InnerHtml;
+                var poolOwner   = childNodes.ElementAt(1).InnerHtml;
+                var poolSite    = childNodes.ElementAt(2).InnerHtml;
+                var poolFee     = childNodes.ElementAt(3).InnerHtml;
+                var poolAddress = childNodes.ElementAt(4).InnerHtml;
+
+                var poolVerified = false;
+                if (childNodes.ElementAt(5).InnerHtml == "Yes")
+                    poolVerified = true;
+
+                PoolList.Add(poolName, poolAddress);
+                var temp = -1;
+            }
+
+            comboBox_Pools.SelectedIndex = 0;
         }
 
         //QUEUE HANDLERS
@@ -94,7 +160,7 @@ namespace MinerManager
             {
                 if (!ValidateFields()) throw new ArgumentException("Empty pool or wallet");
 
-                var targetPool = textBox_Pool.Text;
+                var targetPool = comboBox_Pools.Text;
                 var targetWallet = textBox_Wallet.Text;
                 var minutesMining = Math.Round(TimeToMine(), 2);
                 var usingLookupGap = checkBox_UseLookupGap.Checked;
@@ -406,7 +472,7 @@ namespace MinerManager
         //UTIL FUNCTIONS
         bool ValidateFields()
         {
-            if (String.IsNullOrWhiteSpace(textBox_Pool.Text) || String.IsNullOrWhiteSpace(textBox_Wallet.Text))
+            if (String.IsNullOrWhiteSpace(comboBox_Pools.Text) || String.IsNullOrWhiteSpace(textBox_Wallet.Text))
                 return false;
 
             return true;

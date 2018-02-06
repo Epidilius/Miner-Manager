@@ -1,6 +1,6 @@
 ﻿namespace MinerManager
 {
-    partial class Form1
+    partial class Manager
     {
         /// <summary>
         /// Required designer variable.
@@ -29,12 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Manager));
             this.dataGridView_Queue = new System.Windows.Forms.DataGridView();
+            this.Pool = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wallet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MiningDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Algorithm = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UsingLookupGap = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox_Pool = new System.Windows.Forms.TextBox();
             this.textBox_Wallet = new System.Windows.Forms.TextBox();
             this.button_AddToQueue = new System.Windows.Forms.Button();
             this.checkBox_UseLookupGap = new System.Windows.Forms.CheckBox();
@@ -47,10 +51,14 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.comboBox_Algorithm = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.textBox_Seconds = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.comboBox_CurrentJob_Algorithm = new System.Windows.Forms.ComboBox();
             this.textBox_CurrentJob_Seconds = new System.Windows.Forms.TextBox();
             this.button_StartJob = new System.Windows.Forms.Button();
             this.button_PauseJob = new System.Windows.Forms.Button();
@@ -69,15 +77,7 @@
             this.button_Remove = new System.Windows.Forms.Button();
             this.button_MoveDown = new System.Windows.Forms.Button();
             this.button_MoveUp = new System.Windows.Forms.Button();
-            this.comboBox_Algorithm = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.comboBox_CurrentJob_Algorithm = new System.Windows.Forms.ComboBox();
-            this.Pool = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Wallet = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MiningDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Algorithm = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UsingLookupGap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboBox_Pools = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Queue)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -99,6 +99,35 @@
             this.dataGridView_Queue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView_Queue.Size = new System.Drawing.Size(473, 381);
             this.dataGridView_Queue.TabIndex = 0;
+            // 
+            // Pool
+            // 
+            this.Pool.HeaderText = "Pool";
+            this.Pool.Name = "Pool";
+            this.Pool.ReadOnly = true;
+            // 
+            // Wallet
+            // 
+            this.Wallet.HeaderText = "Wallet";
+            this.Wallet.Name = "Wallet";
+            this.Wallet.ReadOnly = true;
+            // 
+            // MiningDuration
+            // 
+            this.MiningDuration.HeaderText = "Mining Duration";
+            this.MiningDuration.Name = "MiningDuration";
+            this.MiningDuration.ReadOnly = true;
+            // 
+            // Algorithm
+            // 
+            this.Algorithm.HeaderText = "Algorithm";
+            this.Algorithm.Name = "Algorithm";
+            // 
+            // UsingLookupGap
+            // 
+            this.UsingLookupGap.HeaderText = "Using Lookup Gap";
+            this.UsingLookupGap.Name = "UsingLookupGap";
+            this.UsingLookupGap.ReadOnly = true;
             // 
             // label1
             // 
@@ -127,18 +156,11 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Target Wallet";
             // 
-            // textBox_Pool
-            // 
-            this.textBox_Pool.Location = new System.Drawing.Point(3, 33);
-            this.textBox_Pool.Name = "textBox_Pool";
-            this.textBox_Pool.Size = new System.Drawing.Size(481, 20);
-            this.textBox_Pool.TabIndex = 4;
-            // 
             // textBox_Wallet
             // 
-            this.textBox_Wallet.Location = new System.Drawing.Point(3, 72);
+            this.textBox_Wallet.Location = new System.Drawing.Point(6, 72);
             this.textBox_Wallet.Name = "textBox_Wallet";
-            this.textBox_Wallet.Size = new System.Drawing.Size(481, 20);
+            this.textBox_Wallet.Size = new System.Drawing.Size(469, 20);
             this.textBox_Wallet.TabIndex = 5;
             // 
             // button_AddToQueue
@@ -224,6 +246,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBox_Pools);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.comboBox_Algorithm);
             this.groupBox1.Controls.Add(this.label13);
@@ -233,7 +256,6 @@
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.textBox_Minutes);
-            this.groupBox1.Controls.Add(this.textBox_Pool);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.textBox_Wallet);
             this.groupBox1.Controls.Add(this.textBox_Hours);
@@ -245,6 +267,36 @@
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add To Queue";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(123, 120);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(50, 13);
+            this.label14.TabIndex = 23;
+            this.label14.Text = "Algorithm";
+            // 
+            // comboBox_Algorithm
+            // 
+            this.comboBox_Algorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Algorithm.FormattingEnabled = true;
+            this.comboBox_Algorithm.Items.AddRange(new object[] {
+            "scrypt:10",
+            "heavy",
+            "mjollnir",
+            "fugue256",
+            "groestl",
+            "myr-gr",
+            "jackpot",
+            "quark",
+            "anime",
+            "nist5",
+            "x11"});
+            this.comboBox_Algorithm.Location = new System.Drawing.Point(122, 139);
+            this.comboBox_Algorithm.Name = "comboBox_Algorithm";
+            this.comboBox_Algorithm.Size = new System.Drawing.Size(116, 21);
+            this.comboBox_Algorithm.TabIndex = 22;
             // 
             // label13
             // 
@@ -288,6 +340,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Current Job";
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(120, 120);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(50, 13);
+            this.label15.TabIndex = 25;
+            this.label15.Text = "Algorithm";
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -296,6 +357,28 @@
             this.label12.Size = new System.Drawing.Size(21, 13);
             this.label12.TabIndex = 23;
             this.label12.Text = "SS";
+            // 
+            // comboBox_CurrentJob_Algorithm
+            // 
+            this.comboBox_CurrentJob_Algorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_CurrentJob_Algorithm.Enabled = false;
+            this.comboBox_CurrentJob_Algorithm.FormattingEnabled = true;
+            this.comboBox_CurrentJob_Algorithm.Items.AddRange(new object[] {
+            "scrypt:10",
+            "heavy",
+            "mjollnir",
+            "fugue256",
+            "groestl",
+            "myr-gr",
+            "jackpot",
+            "quark",
+            "anime",
+            "nist5",
+            "x11"});
+            this.comboBox_CurrentJob_Algorithm.Location = new System.Drawing.Point(119, 139);
+            this.comboBox_CurrentJob_Algorithm.Name = "comboBox_CurrentJob_Algorithm";
+            this.comboBox_CurrentJob_Algorithm.Size = new System.Drawing.Size(114, 21);
+            this.comboBox_CurrentJob_Algorithm.TabIndex = 24;
             // 
             // textBox_CurrentJob_Seconds
             // 
@@ -375,7 +458,7 @@
             this.textBox_CurrentJob_Pool.Enabled = false;
             this.textBox_CurrentJob_Pool.Location = new System.Drawing.Point(3, 33);
             this.textBox_CurrentJob_Pool.Name = "textBox_CurrentJob_Pool";
-            this.textBox_CurrentJob_Pool.Size = new System.Drawing.Size(481, 20);
+            this.textBox_CurrentJob_Pool.Size = new System.Drawing.Size(472, 20);
             this.textBox_CurrentJob_Pool.TabIndex = 4;
             // 
             // label10
@@ -392,7 +475,7 @@
             this.textBox_CurrentJob_Wallet.Enabled = false;
             this.textBox_CurrentJob_Wallet.Location = new System.Drawing.Point(3, 72);
             this.textBox_CurrentJob_Wallet.Name = "textBox_CurrentJob_Wallet";
-            this.textBox_CurrentJob_Wallet.Size = new System.Drawing.Size(481, 20);
+            this.textBox_CurrentJob_Wallet.Size = new System.Drawing.Size(472, 20);
             this.textBox_CurrentJob_Wallet.TabIndex = 5;
             // 
             // textBox_CurrentJob_Hours
@@ -471,97 +554,15 @@
             this.button_MoveUp.UseVisualStyleBackColor = true;
             this.button_MoveUp.Click += new System.EventHandler(this.button_MoveUp_Click);
             // 
-            // comboBox_Algorithm
+            // comboBox_Pools
             // 
-            this.comboBox_Algorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_Algorithm.FormattingEnabled = true;
-            this.comboBox_Algorithm.Items.AddRange(new object[] {
-            "scrypt:10",
-            "heavy",
-            "mjollnir",
-            "fugue256",
-            "groestl",
-            "myr-gr",
-            "jackpot",
-            "quark",
-            "anime",
-            "nist5",
-            "x11"});
-            this.comboBox_Algorithm.Location = new System.Drawing.Point(122, 139);
-            this.comboBox_Algorithm.Name = "comboBox_Algorithm";
-            this.comboBox_Algorithm.Size = new System.Drawing.Size(116, 21);
-            this.comboBox_Algorithm.TabIndex = 22;
+            this.comboBox_Pools.FormattingEnabled = true;
+            this.comboBox_Pools.Location = new System.Drawing.Point(6, 33);
+            this.comboBox_Pools.Name = "comboBox_Pools";
+            this.comboBox_Pools.Size = new System.Drawing.Size(469, 21);
+            this.comboBox_Pools.TabIndex = 24;
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(123, 120);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(50, 13);
-            this.label14.TabIndex = 23;
-            this.label14.Text = "Algorithm";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(120, 120);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(50, 13);
-            this.label15.TabIndex = 25;
-            this.label15.Text = "Algorithm";
-            // 
-            // comboBox_CurrentJob_Algorithm
-            // 
-            this.comboBox_CurrentJob_Algorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_CurrentJob_Algorithm.Enabled = false;
-            this.comboBox_CurrentJob_Algorithm.FormattingEnabled = true;
-            this.comboBox_CurrentJob_Algorithm.Items.AddRange(new object[] {
-            "scrypt:10",
-            "heavy",
-            "mjollnir",
-            "fugue256",
-            "groestl",
-            "myr-gr",
-            "jackpot",
-            "quark",
-            "anime",
-            "nist5",
-            "x11"});
-            this.comboBox_CurrentJob_Algorithm.Location = new System.Drawing.Point(119, 139);
-            this.comboBox_CurrentJob_Algorithm.Name = "comboBox_CurrentJob_Algorithm";
-            this.comboBox_CurrentJob_Algorithm.Size = new System.Drawing.Size(114, 21);
-            this.comboBox_CurrentJob_Algorithm.TabIndex = 24;
-            // 
-            // Pool
-            // 
-            this.Pool.HeaderText = "Pool";
-            this.Pool.Name = "Pool";
-            this.Pool.ReadOnly = true;
-            // 
-            // Wallet
-            // 
-            this.Wallet.HeaderText = "Wallet";
-            this.Wallet.Name = "Wallet";
-            this.Wallet.ReadOnly = true;
-            // 
-            // MiningDuration
-            // 
-            this.MiningDuration.HeaderText = "Mining Duration";
-            this.MiningDuration.Name = "MiningDuration";
-            this.MiningDuration.ReadOnly = true;
-            // 
-            // Algorithm
-            // 
-            this.Algorithm.HeaderText = "Algorithm";
-            this.Algorithm.Name = "Algorithm";
-            // 
-            // UsingLookupGap
-            // 
-            this.UsingLookupGap.HeaderText = "Using Lookup Gap";
-            this.UsingLookupGap.Name = "UsingLookupGap";
-            this.UsingLookupGap.ReadOnly = true;
-            // 
-            // Form1
+            // Manager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -575,7 +576,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_Queue);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "Manager";
             this.Text = "Miner Manager";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Queue)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -594,7 +595,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox_Pool;
         private System.Windows.Forms.TextBox textBox_Wallet;
         private System.Windows.Forms.Button button_AddToQueue;
         private System.Windows.Forms.CheckBox checkBox_UseLookupGap;
@@ -638,6 +638,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox comboBox_CurrentJob_Algorithm;
+        private System.Windows.Forms.ComboBox comboBox_Pools;
     }
 }
 
