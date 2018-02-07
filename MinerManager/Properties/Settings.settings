@@ -1,7 +1,36 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MinerManager.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MinerPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Crypto\Tools\ccminer-x64-2.2.4-cuda9\</Value>
+    </Setting>
+    <Setting Name="CCMinerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ccminer-x64</Value>
+    </Setting>
+    <Setting Name="MinerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RunGarlicPoolMiner.bat</Value>
+    </Setting>
+    <Setting Name="CatalystName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">StartMiner.bat</Value>
+    </Setting>
+    <Setting Name="MaxTemp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">85</Value>
+    </Setting>
+    <Setting Name="PreferredPool" Type="System.String" Scope="User">
+      <Value Profile="(Default)">stratum+tcp://us.pool.garlicsoup.xyz:3333</Value>
+    </Setting>
+    <Setting Name="PreferredAlgorithmIndex" Type="System.String" Scope="User">
+      <Value Profile="(Default)">scrypt:10</Value>
+    </Setting>
+    <Setting Name="WalletAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GRmjX8YfkHXZWL6GPHgnRAC7PjrHqfHzvy</Value>
+    </Setting>
+    <Setting Name="PreferLookupGap" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PreferToSelfMine" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

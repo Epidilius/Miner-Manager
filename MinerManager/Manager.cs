@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Configuration;
 using System.Timers;
 using System.Diagnostics;
-using System.Threading;
 using System.Management;
 using System.Runtime.InteropServices;
 using HtmlAgilityPack;
@@ -35,7 +29,7 @@ namespace MinerManager
             IMPERSONATE = (0x0100),
             DIRECT_IMPERSONATION = (0x0200)
         }
-
+        //TODO: On menu item click
         [DllImport("kernel32.dll")]
         static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
         [DllImport("kernel32.dll")]
@@ -45,6 +39,23 @@ namespace MinerManager
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         static extern bool CloseHandle(IntPtr handle);
         #endregion
+
+        #region System Menu Requirements
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        [DllImport("user32.dll")]
+        private static extern bool InsertMenu(IntPtr hMenu, Int32 wPosition, Int32 wFlags, Int32 wIDNewItem, string lpNewItem);
+        
+        public const Int32 WM_SYSCOMMAND = 0x112;
+        public const Int32 MF_SEPARATOR = 0x800;
+        public const Int32 MF_BYPOSITION = 0x400;
+        public const Int32 MF_STRING = 0x0;
+
+        //Custom system menu items
+        public const Int32 _SettingsSysMenuID = 1000;
+        public const Int32 _AboutSysMenuID = 1001;
+        #endregion
+
 
         static string POOLS_URL = @"https://pandawanfr.github.io/GarlicRecipes/pool-mining.html#main-net";
         Dictionary<string, string> PoolList;
@@ -64,6 +75,9 @@ namespace MinerManager
         System.Timers.Timer MinerTimer;
         System.Timers.Timer SecondTimer;
 
+        Settings SettingsForm;
+        About AboutForm;
+
         public Manager()
         {
             InitializeComponent();
@@ -72,10 +86,10 @@ namespace MinerManager
 
         void Setup()
         {
-            var filePath = ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["CatalystName"];
+            var filePath = Properties.Settings.Default["MinerPath"].ToString() + Properties.Settings.Default["CatalystName"].ToString();
             if (!File.Exists(filePath))
             {
-                var fileContents = "@echo off\r\nstart cmd /c " + ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["MinerName"];
+                var fileContents = "@echo off\r\nstart cmd /c " + Properties.Settings.Default["MinerPath"] + Properties.Settings.Default["MinerName"];
                 using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
                 {
                     stream.Write(Encoding.ASCII.GetBytes(fileContents), 0, Encoding.ASCII.GetByteCount(fileContents));
@@ -93,8 +107,24 @@ namespace MinerManager
 
             PoolList = new Dictionary<string, string>();
             GetPools();
+
+            AddSystemMenuItems();
+
+            SettingsForm = new Settings();
+            AboutForm = new About();
         }
 
+        void AddSystemMenuItems()
+        {
+            /// Get the Handle for the Forms System Menu
+            IntPtr systemMenuHandle = GetSystemMenu(this.Handle, false);
+
+            /// Create our new System Menu items just before the Close menu item
+            InsertMenu(systemMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty); // <-- Add a menu seperator
+            InsertMenu(systemMenuHandle, 6, MF_BYPOSITION, _SettingsSysMenuID, "Settings");
+            InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _AboutSysMenuID, "About");
+        }
+        
         void GetPools()
         {
             string html = "No Response";
@@ -146,7 +176,10 @@ namespace MinerManager
                 if (childNodes.ElementAt(5).InnerHtml == "Yes")
                     poolVerified = true;
 
-                PoolList.Add(poolName, poolAddress);
+                //TODO: If I do this, I should make the drop down non-editable. Then, display the name, and keep the address hidden. Also, if verified, note that somehow.
+                //PoolList.Add(poolName, poolAddress);
+
+                comboBox_Pools.Items.Add(poolAddress);
                 var temp = -1;
             }
 
@@ -248,7 +281,7 @@ namespace MinerManager
             if (dataGridView_Queue.Rows.Count <= 1)
                 return false;
 
-            var filePath = ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["MinerName"];
+            var filePath = Properties.Settings.Default["MinerPath"].ToString() + Properties.Settings.Default["MinerName"].ToString();
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -265,11 +298,47 @@ namespace MinerManager
             checkBox_CurrentJob_LookupGap.Checked = lookupGap;
             
             var fileContents = BAT_TEXT;
-            fileContents = fileContents.Replace("MINER", ConfigurationManager.AppSettings["CCMinerName"]);
+            fileContents = fileContents.Replace("MINER", Properties.Settings.Default["CCMinerName"].ToString());
             fileContents = fileContents.Replace("ALGORITHM", algorithm);
             fileContents = fileContents.Replace("POOL", pool);
             fileContents = fileContents.Replace("WALLET", wallet);
-            fileContents = fileContents.Replace("TEMP", ConfigurationManager.AppSettings["MaxTemp"]);
+            fileContents = fileContents.Replace("TEMP", Properties.Settings.Default["MaxTemp"].ToString());
+
+            if (lookupGap)
+                fileContents += LOOKUP_GAP_TEXT;
+            fileContents += BAT_SUFFIX;
+
+            using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
+            {
+                stream.Write(Encoding.ASCII.GetBytes(fileContents), 0, Encoding.ASCII.GetByteCount(fileContents));
+            }
+
+            return true;
+        }
+        bool CreatePreferredScript()
+        {
+            var filePath = Properties.Settings.Default["MinerPath"].ToString() + Properties.Settings.Default["MinerName"].ToString();
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            var pool        = Properties.Settings.Default["PreferredPool"].ToString();
+            var wallet      = Properties.Settings.Default["WalletAddress"].ToString();
+            var algorithm   = Properties.Settings.Default["PreferredAlgorithmIndex"].ToString();
+            var lookupGap   = Convert.ToBoolean(Properties.Settings.Default["PreferLookupGap"]);
+
+            textBox_CurrentJob_Pool.Text            = pool;
+            textBox_CurrentJob_Wallet.Text          = wallet;
+            comboBox_CurrentJob_Algorithm.Text      = algorithm;
+            checkBox_CurrentJob_LookupGap.Checked   = lookupGap;
+
+            var fileContents = BAT_TEXT;
+            fileContents = fileContents.Replace("MINER", Properties.Settings.Default["CCMinerName"].ToString());
+            fileContents = fileContents.Replace("ALGORITHM", algorithm);
+            fileContents = fileContents.Replace("POOL", pool);
+            fileContents = fileContents.Replace("WALLET", wallet);
+            fileContents = fileContents.Replace("TEMP", Properties.Settings.Default["MaxTemp"].ToString());
 
             if (lookupGap)
                 fileContents += LOOKUP_GAP_TEXT;
@@ -287,7 +356,7 @@ namespace MinerManager
             DisplayTrayNotification("Job Done", "Mining done, updating mining job");
             KillAllProcessesSpawnedBy(ParentProcessID);
 
-            if(dataGridView_Queue.Rows.Count <= 1) PauseJobTimers();
+            if (dataGridView_Queue.Rows.Count <= 1) QueueEmpty();
             else StartMiner();
         }
         void RunMinerScript()
@@ -295,8 +364,8 @@ namespace MinerManager
             ProcessStartInfo processInfo;
             Process process;
 
-            processInfo = new ProcessStartInfo("cmd.exe", "/c " + ConfigurationManager.AppSettings["MinerPath"] + ConfigurationManager.AppSettings["CatalystName"]);
-            processInfo.WorkingDirectory = ConfigurationManager.AppSettings["MinerPath"];
+            processInfo = new ProcessStartInfo("cmd.exe", "/c " + Properties.Settings.Default["MinerPath"] + Properties.Settings.Default["CatalystName"]);
+            processInfo.WorkingDirectory = Properties.Settings.Default["MinerPath"].ToString();
             processInfo.WindowStyle = ProcessWindowStyle.Hidden;
             processInfo.UseShellExecute = false;
             processInfo.CreateNoWindow = true;
@@ -307,6 +376,21 @@ namespace MinerManager
 
             process.WaitForExit();
             process.Close();
+        }
+        void QueueEmpty()
+        {
+            if (Convert.ToBoolean(Properties.Settings.Default["PreferToSelfMine"]))
+                StartPreferredJob();
+            else
+                PauseJobTimers();
+        }
+        void StartPreferredJob()
+        {
+            if (!CreatePreferredScript())
+                return;
+
+            StartJobTimer(-1f);
+            RunMinerScript();
         }
 
         //PROCESS HANDLERS
@@ -391,9 +475,10 @@ namespace MinerManager
         //TIMER FUNCTIONS
         void StartJobTimer(float duration)
         {
-            TimerCompleteAt = DateTime.Now.AddMilliseconds(duration * 60f * 1000f);
             if (duration == -1)
                 TimerCompleteAt = DateTime.MinValue;
+            else
+                TimerCompleteAt = DateTime.Now.AddMilliseconds(duration * 60f * 1000f);
 
             StartMinerTimer(duration);
             StartSecondTimer();
@@ -401,9 +486,11 @@ namespace MinerManager
         void StartMinerTimer(float duration)
         {
             MinerTimer = new System.Timers.Timer();
+
+            if (duration == -1) return;
+
             MinerTimer.Elapsed += new ElapsedEventHandler(MinerTimerTick);
-            if (duration == -1) MinerTimer.Interval = int.MaxValue;
-            else                MinerTimer.Interval = duration * 60f * 1000f;
+            MinerTimer.Interval = duration * 60f * 1000f;
             MinerTimer.Start();
         }
         void StartSecondTimer()
@@ -508,7 +595,26 @@ namespace MinerManager
             }
         }
 
-        //TRAY FUNCTIONS
+        //MENU/TRAY FUNCTIONS
+        protected override void WndProc(ref Message m)
+        {
+            // Check if a System Command has been executed
+            if (m.Msg == WM_SYSCOMMAND)
+            {
+                // Execute the appropriate code for the System Menu item that was clicked
+                switch (m.WParam.ToInt32())
+                {
+                    case _SettingsSysMenuID:
+                        SettingsForm.Show();
+                        break;
+                    case _AboutSysMenuID:
+                        AboutForm.Show();
+                        break;
+                }
+            }
+
+            base.WndProc(ref m);
+        }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing && FormWindowState.Normal == WindowState)

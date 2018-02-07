@@ -51,6 +51,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBox_Pools = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.comboBox_Algorithm = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -77,7 +78,6 @@
             this.button_Remove = new System.Windows.Forms.Button();
             this.button_MoveDown = new System.Windows.Forms.Button();
             this.button_MoveUp = new System.Windows.Forms.Button();
-            this.comboBox_Pools = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Queue)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -268,6 +268,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add To Queue";
             // 
+            // comboBox_Pools
+            // 
+            this.comboBox_Pools.FormattingEnabled = true;
+            this.comboBox_Pools.Location = new System.Drawing.Point(6, 33);
+            this.comboBox_Pools.Name = "comboBox_Pools";
+            this.comboBox_Pools.Size = new System.Drawing.Size(469, 21);
+            this.comboBox_Pools.TabIndex = 24;
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -279,7 +287,6 @@
             // 
             // comboBox_Algorithm
             // 
-            this.comboBox_Algorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_Algorithm.FormattingEnabled = true;
             this.comboBox_Algorithm.Items.AddRange(new object[] {
             "scrypt:10",
@@ -554,19 +561,11 @@
             this.button_MoveUp.UseVisualStyleBackColor = true;
             this.button_MoveUp.Click += new System.EventHandler(this.button_MoveUp_Click);
             // 
-            // comboBox_Pools
-            // 
-            this.comboBox_Pools.FormattingEnabled = true;
-            this.comboBox_Pools.Location = new System.Drawing.Point(6, 33);
-            this.comboBox_Pools.Name = "comboBox_Pools";
-            this.comboBox_Pools.Size = new System.Drawing.Size(469, 21);
-            this.comboBox_Pools.TabIndex = 24;
-            // 
             // Manager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1082, 420);
+            this.ClientSize = new System.Drawing.Size(1082, 424);
             this.Controls.Add(this.button_Start);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);

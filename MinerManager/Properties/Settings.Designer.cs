@@ -8,22 +8,138 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MinerManager.Properties
-{
-
-
+namespace MinerManager.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Crypto\\Tools\\ccminer-x64-2.2.4-cuda9\\")]
+        public string MinerPath {
+            get {
+                return ((string)(this["MinerPath"]));
+            }
+            set {
+                this["MinerPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ccminer-x64")]
+        public string CCMinerName {
+            get {
+                return ((string)(this["CCMinerName"]));
+            }
+            set {
+                this["CCMinerName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RunGarlicPoolMiner.bat")]
+        public string MinerName {
+            get {
+                return ((string)(this["MinerName"]));
+            }
+            set {
+                this["MinerName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("StartMiner.bat")]
+        public string CatalystName {
+            get {
+                return ((string)(this["CatalystName"]));
+            }
+            set {
+                this["CatalystName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("85")]
+        public string MaxTemp {
+            get {
+                return ((string)(this["MaxTemp"]));
+            }
+            set {
+                this["MaxTemp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("stratum+tcp://us.pool.garlicsoup.xyz:3333")]
+        public string PreferredPool {
+            get {
+                return ((string)(this["PreferredPool"]));
+            }
+            set {
+                this["PreferredPool"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("scrypt:10")]
+        public string PreferredAlgorithmIndex {
+            get {
+                return ((string)(this["PreferredAlgorithmIndex"]));
+            }
+            set {
+                this["PreferredAlgorithmIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GRmjX8YfkHXZWL6GPHgnRAC7PjrHqfHzvy")]
+        public string WalletAddress {
+            get {
+                return ((string)(this["WalletAddress"]));
+            }
+            set {
+                this["WalletAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PreferLookupGap {
+            get {
+                return ((bool)(this["PreferLookupGap"]));
+            }
+            set {
+                this["PreferLookupGap"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PreferToSelfMine {
+            get {
+                return ((bool)(this["PreferToSelfMine"]));
+            }
+            set {
+                this["PreferToSelfMine"] = value;
             }
         }
     }
